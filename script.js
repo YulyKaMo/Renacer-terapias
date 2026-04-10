@@ -27,37 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    /* -------------------------
-       Language Toggle (ES/EN)
-       ------------------------- */
-    const langToggleBtn = document.getElementById('lang-toggle');
-    const langLabel = langToggleBtn.querySelector('.lang-label');
-    const htmlEl = document.documentElement;
-    
-    // Check saved language
-    const savedLang = localStorage.getItem('lang');
-    if (savedLang === 'en') {
-        htmlEl.classList.add('lang-en');
-        htmlEl.setAttribute('lang', 'en');
-        langLabel.textContent = 'ES';
-    } else {
-        htmlEl.setAttribute('lang', 'es');
-        langLabel.textContent = 'EN';
-    }
-
-    langToggleBtn.addEventListener('click', () => {
-        if (htmlEl.classList.contains('lang-en')) {
-            htmlEl.classList.remove('lang-en');
-            htmlEl.setAttribute('lang', 'es');
-            localStorage.setItem('lang', 'es');
-            langLabel.textContent = 'EN';
-        } else {
-            htmlEl.classList.add('lang-en');
-            htmlEl.setAttribute('lang', 'en');
-            localStorage.setItem('lang', 'en');
-            langLabel.textContent = 'ES';
-        }
-    });
 
     /* -------------------------
        Mobile Menu Toggle

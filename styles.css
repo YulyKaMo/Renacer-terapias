@@ -86,8 +86,12 @@ body {
     background: var(--bg-main);
     color: var(--text-main);
     line-height: 1.6;
-    overflow-x: clip;
+    overflow-x: hidden;
     transition: background-color var(--transition), color var(--transition);
+}
+
+body.menu-open {
+    overflow: hidden;
 }
 
 main {
@@ -308,6 +312,7 @@ p {
 .nav-links {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 1.75rem;
 }
 
@@ -315,7 +320,7 @@ p {
     position: relative;
     font-weight: 500;
     color: var(--text-main);
-    transition: color var(--transition-fast);
+    transition: color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .nav-links a::after {
@@ -384,6 +389,14 @@ p {
     width: 46px;
     height: 46px;
     font-size: 1.2rem;
+}
+
+.mobile-menu-btn i {
+    transition: transform var(--transition), opacity var(--transition), color var(--transition);
+}
+
+.mobile-menu-btn.is-active i {
+    transform: rotate(180deg) scale(1.03);
 }
 
 .hero {
@@ -689,6 +702,7 @@ p {
     display: flex;
     height: 100%;
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
 }
 
 .carousel-slide {
@@ -1248,44 +1262,123 @@ footer p {
 
 @media (max-width: 900px) {
     .nav-container {
-        grid-template-columns: auto auto auto;
+        grid-template-columns: 1fr auto auto;
+        gap: 0.85rem;
+        position: relative;
+    }
+
+    .logo {
+        min-width: 0;
+    }
+
+    .logo img {
+        height: 60px;
+    }
+
+    .logo-text {
+        font-size: 1.15rem;
     }
 
     .mobile-menu-btn {
         display: inline-flex;
         justify-self: end;
+        position: relative;
+        z-index: 1102;
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        box-shadow: 0 10px 24px rgba(12, 33, 37, 0.12);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+    }
+
+    .controls {
+        justify-self: end;
+        position: relative;
+        z-index: 1102;
     }
 
     .nav-links {
         position: absolute;
-        top: calc(100% + 0.75rem);
-        left: 1rem;
-        right: 1rem;
+        top: calc(100% + 0.9rem);
+        left: 0;
+        right: 0;
+        z-index: 1101;
+
+        display: flex;
         flex-direction: column;
-        gap: 1.25rem;
-        padding: 1.25rem;
-        background: var(--bg-card-soft);
-        border: 1px solid var(--border-color);
-        border-radius: 24px;
-        box-shadow: var(--shadow-md);
+        align-items: stretch;
+        gap: 0.35rem;
+
+        padding: 0.9rem;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 28px;
+        box-shadow: 0 24px 60px rgba(12, 33, 37, 0.18);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+
         opacity: 0;
         visibility: hidden;
-        transform: translateY(-10px);
+        transform: translateY(-14px) scale(0.98);
         pointer-events: none;
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        transition: opacity var(--transition-fast), transform var(--transition-fast), visibility var(--transition-fast);
+
+        transition:
+            opacity var(--transition-fast),
+            transform var(--transition-fast),
+            visibility var(--transition-fast);
     }
 
     .nav-links.active {
         opacity: 1;
         visibility: visible;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         pointer-events: auto;
     }
 
     .nav-links a {
-        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 54px;
+        padding: 0.95rem 1rem;
+        border-radius: 18px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-main);
+        background: transparent;
+    }
+
+    .nav-links a::after {
+        display: none;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible,
+    .nav-links a.active {
+        background: linear-gradient(135deg, rgba(31, 167, 155, 0.14), rgba(47, 127, 166, 0.12));
+        color: var(--primary-strong);
+        transform: translateX(4px);
+    }
+
+    [data-theme="dark"] .mobile-menu-btn {
+        background: rgba(16, 37, 43, 0.78);
+        border-color: rgba(169, 194, 199, 0.14);
+    }
+
+    [data-theme="dark"] .nav-links {
+        background: rgba(16, 37, 43, 0.84);
+        border-color: rgba(169, 194, 199, 0.14);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+    }
+
+    [data-theme="dark"] .nav-links a:hover,
+    [data-theme="dark"] .nav-links a:focus-visible,
+    [data-theme="dark"] .nav-links a.active {
+        background: linear-gradient(135deg, rgba(84, 218, 204, 0.16), rgba(129, 198, 255, 0.12));
+        color: var(--primary);
     }
 }
 
@@ -1302,7 +1395,7 @@ footer p {
     }
 
     .logo-text {
-        font-size: 1.2rem;
+        font-size: 1.08rem;
     }
 
     .hero {
@@ -1340,7 +1433,21 @@ footer p {
     }
 
     .nav-container {
-        gap: 0.75rem;
+        gap: 0.65rem;
+    }
+
+    .logo img {
+        height: 50px;
+    }
+
+    .logo-text {
+        font-size: 1rem;
+    }
+
+    .mobile-menu-btn,
+    .control-btn {
+        width: 44px;
+        height: 44px;
     }
 
     .hero h1 {
@@ -1389,10 +1496,8 @@ footer p {
 
 /* ==========================================
    NOSOTROS — ESTILO SEGÚN REFERENCIAS VISUALES
-   Pegar al final de styles.css
    ========================================== */
 
-/* Estado activo en navegación */
 .nav-links a.active {
     color: var(--primary);
 }
@@ -1401,7 +1506,6 @@ footer p {
     transform: scaleX(1);
 }
 
-/* Ocultamos el hero de nosotros, pero compensamos el espacio del navbar fijo */
 .page-hero--about {
     display: none;
 }
@@ -1415,7 +1519,6 @@ footer p {
     width: min(92%, var(--container));
 }
 
-/* -------------------------- Bloque principal -------------------------- */
 .about-page-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -1467,7 +1570,6 @@ footer p {
     display: none;
 }
 
-/* -------------------------- Imagen y halo -------------------------- */
 .about-page-visual {
     position: relative;
     display: flex;
@@ -1523,7 +1625,6 @@ footer p {
     display: none;
 }
 
-/* -------------------------- Cita -------------------------- */
 .about-quote {
     position: relative;
     max-width: 1100px;
@@ -1554,7 +1655,6 @@ footer p {
     text-wrap: balance;
 }
 
-/* -------------------------- Tarjetas -------------------------- */
 .about-story-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1602,7 +1702,6 @@ footer p {
     line-height: 1.8;
 }
 
-/* -------------------------- Valores -------------------------- */
 .values-section {
     padding-top: 0;
 }
@@ -1653,7 +1752,6 @@ footer p {
     font-size: 1.05rem;
 }
 
-/* -------------------------- Responsive -------------------------- */
 @media (max-width: 1100px) {
     .about-page-grid {
         grid-template-columns: 1fr;
@@ -1777,7 +1875,6 @@ footer p {
     }
 }
 
-/* -------------------------- Dark mode -------------------------- */
 [data-theme="dark"] .about-page {
     background: var(--bg-main);
 }
